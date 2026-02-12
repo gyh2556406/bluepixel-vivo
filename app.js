@@ -77,55 +77,19 @@ createApp({
       email.value = '';
     }
 
-    function decodeJwt(token) {
-      const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-      return JSON.parse(atob(base64));
-    }
+    let tokenClient = null;
 
-    function handleGoogleCallback(response) {
-      const payload = decodeJwt(response.credential);
-      user.value = {
-        name: payload.name,
-        email: payload.email,
-        picture: payload.picture,
-      };
-      localStorage.setItem('bluepixel_user', JSON.stringify(user.value));
+    function googleLogin() {
+      if (tokenClient) {
+        tokenClient.requestAccessToken();
+      }
     }
 
     function logout() {
       user.value = null;
       showUserMenu.value = false;
       localStorage.removeItem('bluepixel_user');
-      // Re-render the sign-in button after logout
-      nextTick(() => renderGoogleButton());
     }
-
-    function renderGoogleButton() {
-      const el = document.getElementById('google-signin-btn');
-      if (el && window.google) {
-        google.accounts.id.renderButton(el, {
-          theme: 'filled_blue',
-          size: 'large',
-          width: 320,
-          text: 'continue_with',
-        });
-      }
-    }
-
-    function googleManualLogin() {
-      if (window.google) {
-        google.accounts.id.prompt((notification) => {
-          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-            // Fallback: use the rendered button or prompt again
-            const btn = document.querySelector('#google-signin-btn div[role="button"]');
-            if (btn) btn.click();
-          }
-        });
-      }
-    }
-
-    // Expose callback globally for Google GSI
-    window.handleGoogleCallback = handleGoogleCallback;
 
     // Typing animation
     let typeInterval;
@@ -134,21 +98,32 @@ createApp({
       const saved = localStorage.getItem('bluepixel_user');
       if (saved) user.value = JSON.parse(saved);
 
-      // Init Google Sign-In
+      // Init Google OAuth2 token client
       const initGoogle = () => {
-        if (window.google) {
-          google.accounts.id.initialize({
+        if (window.google && google.accounts && google.accounts.oauth2) {
+          tokenClient = google.accounts.oauth2.initTokenClient({
             client_id: GOOGLE_CLIENT_ID,
-            callback: handleGoogleCallback,
+            scope: 'profile email',
+            callback: async (tokenResponse) => {
+              if (tokenResponse.access_token) {
+                const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                  headers: { Authorization: 'Bearer ' + tokenResponse.access_token },
+                });
+                const profile = await res.json();
+                user.value = {
+                  name: profile.name,
+                  email: profile.email,
+                  picture: profile.picture,
+                };
+                localStorage.setItem('bluepixel_user', JSON.stringify(user.value));
+              }
+            },
           });
-          google.accounts.id.prompt(); // One Tap prompt
-          nextTick(() => renderGoogleButton());
         } else {
           setTimeout(initGoogle, 500);
         }
       };
-      // Wait for Vue to render DOM first
-      nextTick(() => initGoogle());
+      initGoogle();
 
       // Close user menu on outside click
       document.addEventListener('click', (e) => {
@@ -204,6 +179,6 @@ createApp({
 
     onUnmounted(() => clearInterval(typeInterval));
 
-    return { scrolled, mobileMenu, email, signedUp, typedText, stats, features, steps, gallery, pricing, testimonials, faqs, toggleFaq, handleSignup, user, showUserMenu, logout, googleManualLogin };
+    return { scrolled, mobileMenu, email, signedUp, typedText, stats, features, steps, gallery, pricing, testimonials, faqs, toggleFaq, handleSignup, user, showUserMenu, logout, googleLogin };
   }
 }).mount('#app');
