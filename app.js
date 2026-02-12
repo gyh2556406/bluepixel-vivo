@@ -80,9 +80,41 @@ createApp({
     let tokenClient = null;
 
     function googleLogin() {
-      if (tokenClient) {
-        tokenClient.requestAccessToken();
+      if (!tokenClient) {
+        // Try init again if not ready
+        if (window.google && google.accounts && google.accounts.oauth2) {
+          initTokenClient();
+        } else {
+          alert('Google Sign-In is still loading. Please try again.');
+          return;
+        }
       }
+      tokenClient.requestAccessToken();
+    }
+
+    function initTokenClient() {
+      tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'profile email',
+        callback: async (tokenResponse) => {
+          if (tokenResponse.access_token) {
+            try {
+              const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: 'Bearer ' + tokenResponse.access_token },
+              });
+              const profile = await res.json();
+              user.value = {
+                name: profile.name,
+                email: profile.email,
+                picture: profile.picture,
+              };
+              localStorage.setItem('bluepixel_user', JSON.stringify(user.value));
+            } catch (e) {
+              console.error('Failed to fetch user info:', e);
+            }
+          }
+        },
+      });
     }
 
     function logout() {
@@ -101,24 +133,8 @@ createApp({
       // Init Google OAuth2 token client
       const initGoogle = () => {
         if (window.google && google.accounts && google.accounts.oauth2) {
-          tokenClient = google.accounts.oauth2.initTokenClient({
-            client_id: GOOGLE_CLIENT_ID,
-            scope: 'profile email',
-            callback: async (tokenResponse) => {
-              if (tokenResponse.access_token) {
-                const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                  headers: { Authorization: 'Bearer ' + tokenResponse.access_token },
-                });
-                const profile = await res.json();
-                user.value = {
-                  name: profile.name,
-                  email: profile.email,
-                  picture: profile.picture,
-                };
-                localStorage.setItem('bluepixel_user', JSON.stringify(user.value));
-              }
-            },
-          });
+          initTokenClient();
+          console.log('Google OAuth2 token client initialized');
         } else {
           setTimeout(initGoogle, 500);
         }
