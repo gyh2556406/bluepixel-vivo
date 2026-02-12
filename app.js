@@ -112,6 +112,18 @@ createApp({
       }
     }
 
+    function googleManualLogin() {
+      if (window.google) {
+        google.accounts.id.prompt((notification) => {
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            // Fallback: use the rendered button or prompt again
+            const btn = document.querySelector('#google-signin-btn div[role="button"]');
+            if (btn) btn.click();
+          }
+        });
+      }
+    }
+
     // Expose callback globally for Google GSI
     window.handleGoogleCallback = handleGoogleCallback;
 
@@ -129,12 +141,14 @@ createApp({
             client_id: GOOGLE_CLIENT_ID,
             callback: handleGoogleCallback,
           });
-          if (!user.value) renderGoogleButton();
+          google.accounts.id.prompt(); // One Tap prompt
+          nextTick(() => renderGoogleButton());
         } else {
-          setTimeout(initGoogle, 200);
+          setTimeout(initGoogle, 500);
         }
       };
-      initGoogle();
+      // Wait for Vue to render DOM first
+      nextTick(() => initGoogle());
 
       // Close user menu on outside click
       document.addEventListener('click', (e) => {
@@ -190,6 +204,6 @@ createApp({
 
     onUnmounted(() => clearInterval(typeInterval));
 
-    return { scrolled, mobileMenu, email, signedUp, typedText, stats, features, steps, gallery, pricing, testimonials, faqs, toggleFaq, handleSignup, user, showUserMenu, logout };
+    return { scrolled, mobileMenu, email, signedUp, typedText, stats, features, steps, gallery, pricing, testimonials, faqs, toggleFaq, handleSignup, user, showUserMenu, logout, googleManualLogin };
   }
 }).mount('#app');
