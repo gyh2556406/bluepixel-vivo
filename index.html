@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BluePixel AI — Edit with Words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <!-- NAV -->
+  <nav :class="['nav', { scrolled: scrolled }]">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-icon">◆</span> BluePixel
+      </a>
+      <button class="mobile-toggle" @click="mobileMenu = !mobileMenu" :class="{ active: mobileMenu }">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" :class="{ open: mobileMenu }">
+        <a href="#features" @click="mobileMenu=false">Features</a>
+        <a href="#how" @click="mobileMenu=false">How It Works</a>
+        <a href="#pricing" @click="mobileMenu=false">Pricing</a>
+        <a href="#faq" @click="mobileMenu=false">FAQ</a>
+        <a href="#contact" @click="mobileMenu=false">Contact</a>
+        <a href="#signup" class="btn btn-sm" @click="mobileMenu=false">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-content reveal">
+      <p class="hero-badge">Powered by vivo-AI</p>
+      <h1>Edit with Words.<br><span class="gradient-text">Output in 4K.</span></h1>
+      <p class="hero-sub">BluePixel is an open-source AI project by vivo Image Group — providing a fully open-sourced agent to handle all your image and video editing needs. One agent, every edit, infinite possibilities.</p>
+      <div class="hero-actions">
+        <a href="#signup" class="btn btn-primary btn-lg">Get Started Free</a>
+        <a href="#how" class="btn btn-ghost btn-lg">▶ Watch Demo</a>
+      </div>
+    </div>
+    <div class="hero-visual reveal reveal-delay-1">
+      <div class="hero-mockup">
+        <div class="mockup-bar">
+          <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+          <span class="mockup-title">BluePixel Editor</span>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-image">
+            <div class="mockup-gradient"></div>
+            <div class="mockup-prompt">
+              <span class="prompt-cursor"></span>
+              <span class="prompt-text">{{ typedText }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-stats reveal reveal-delay-2">
+      <div class="stat" v-for="s in stats" :key="s.label">
+        <span class="stat-value">{{ s.value }}</span>
+        <span class="stat-label">{{ s.label }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="section">
+    <div class="container">
+      <p class="section-badge reveal">Core Technology</p>
+      <h2 class="section-title reveal">Why BluePixel is <span class="gradient-text">different</span></h2>
+      <div class="features-grid">
+        <div class="feature-card reveal" v-for="(f, i) in features" :key="i" :class="'reveal-delay-' + i">
+          <div class="feature-icon">{{ f.icon }}</div>
+          <h3>{{ f.title }}</h3>
+          <p>{{ f.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section section-dark">
+    <div class="container">
+      <p class="section-badge reveal">Simple Workflow</p>
+      <h2 class="section-title reveal">How It <span class="gradient-text">Works</span></h2>
+      <div class="steps">
+        <div class="step reveal" v-for="(s, i) in steps" :key="i" :class="'reveal-delay-' + i">
+          <div class="step-num">{{ i + 1 }}</div>
+          <div class="step-icon">{{ s.icon }}</div>
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.desc }}</p>
+        </div>
+        <div class="step-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" class="section">
+    <div class="container">
+      <p class="section-badge reveal">Real Results</p>
+      <h2 class="section-title reveal">Use Cases</h2>
+      <div class="gallery-grid">
+        <div class="gallery-card reveal" v-for="(g, i) in gallery" :key="i" :class="'reveal-delay-' + (i % 3)">
+          <div class="gallery-img" :style="{ background: g.bg }">
+            <span class="gallery-label">{{ g.label }}</span>
+          </div>
+          <h4>{{ g.title }}</h4>
+          <p>{{ g.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="section section-dark">
+    <div class="container">
+      <p class="section-badge reveal">Pricing</p>
+      <h2 class="section-title reveal">Choose your <span class="gradient-text">plan</span></h2>
+      <div class="pricing-grid">
+        <div class="pricing-card reveal" v-for="(p, i) in pricing" :key="i" :class="[{ popular: p.popular }, 'reveal-delay-' + i]">
+          <div class="popular-badge" v-if="p.popular">Most Popular</div>
+          <h3>{{ p.name }}</h3>
+          <div class="price">
+            <span class="price-currency">$</span>
+            <span class="price-amount">{{ p.price }}</span>
+            <span class="price-period" v-if="p.price !== 'Custom'">/mo</span>
+          </div>
+          <ul>
+            <li v-for="f in p.features" :key="f">
+              <span class="check">✓</span> {{ f }}
+            </li>
+          </ul>
+          <a href="#signup" class="btn" :class="p.popular ? 'btn-primary' : 'btn-outline'">{{ p.cta }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="container">
+      <p class="section-badge reveal">Testimonials</p>
+      <h2 class="section-title reveal">Loved by <span class="gradient-text">creators</span></h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal" v-for="(t, i) in testimonials" :key="i" :class="'reveal-delay-' + i">
+          <p class="testimonial-text">"{{ t.text }}"</p>
+          <div class="testimonial-author">
+            <div class="avatar" :style="{ background: t.color }">{{ t.initials }}</div>
+            <div>
+              <strong>{{ t.name }}</strong>
+              <span>{{ t.role }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section section-dark">
+    <div class="container container-sm">
+      <p class="section-badge reveal">FAQ</p>
+      <h2 class="section-title reveal">Frequently Asked Questions</h2>
+      <div class="faq-list">
+        <div class="faq-item reveal" v-for="(f, i) in faqs" :key="i" :class="{ open: f.open }" @click="toggleFaq(i)">
+          <div class="faq-q">
+            <span>{{ f.q }}</span>
+            <span class="faq-toggle">{{ f.open ? '−' : '+' }}</span>
+          </div>
+          <div class="faq-a" v-show="f.open">
+            <p>{{ f.a }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNUP -->
+  <section id="signup" class="section" id="contact">
+    <div class="container container-sm">
+      <div class="signup-card reveal">
+        <h2>Start editing with AI <span class="gradient-text">today</span></h2>
+        <p>Join the open-source community. BluePixel by vivo Image Group — your AI agent for all image and video editing.</p>
+        <form @submit.prevent="handleSignup" class="signup-form">
+          <div class="input-group">
+            <input type="email" v-model="email" placeholder="Enter your email" required>
+            <button type="submit" class="btn btn-primary">Get Started</button>
+          </div>
+        </form>
+        <div class="divider"><span>or</span></div>
+        <button class="btn btn-google" @click="handleSignup">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <p class="signup-note" v-if="signedUp">✓ Check your inbox for confirmation!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="logo"><span class="logo-icon">◆</span> BluePixel</span>
+          <p>An open-source AI project by vivo Image Group. Edit with words, output in 4K.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#how">How It Works</a>
+          <a href="#">API Docs</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 BluePixel AI. All rights reserved.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="GitHub">⌂</a>
+          <a href="#" aria-label="Discord">◈</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
