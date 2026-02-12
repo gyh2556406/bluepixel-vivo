@@ -23,7 +23,6 @@
       <div class="nav-links" :class="{ open: mobileMenu }">
         <a href="#features" @click="mobileMenu=false">Features</a>
         <a href="#how" @click="mobileMenu=false">How It Works</a>
-        <a href="#pricing" @click="mobileMenu=false">Pricing</a>
         <a href="#faq" @click="mobileMenu=false">FAQ</a>
         <a href="#contact" @click="mobileMenu=false">Contact</a>
         <a href="#signup" class="btn btn-sm" @click="mobileMenu=false" v-if="!user">Get Started</a>
@@ -130,31 +129,6 @@
     </div>
   </section>
 
-  <!-- PRICING -->
-  <section id="pricing" class="section section-dark">
-    <div class="container">
-      <p class="section-badge reveal">Pricing</p>
-      <h2 class="section-title reveal">Choose your <span class="gradient-text">plan</span></h2>
-      <div class="pricing-grid">
-        <div class="pricing-card reveal" v-for="(p, i) in pricing" :key="i" :class="[{ popular: p.popular }, 'reveal-delay-' + i]">
-          <div class="popular-badge" v-if="p.popular">Most Popular</div>
-          <h3>{{ p.name }}</h3>
-          <div class="price">
-            <span class="price-currency">$</span>
-            <span class="price-amount">{{ p.price }}</span>
-            <span class="price-period" v-if="p.price !== 'Custom'">/mo</span>
-          </div>
-          <ul>
-            <li v-for="f in p.features" :key="f">
-              <span class="check">✓</span> {{ f }}
-            </li>
-          </ul>
-          <a href="#signup" class="btn" :class="p.popular ? 'btn-primary' : 'btn-outline'">{{ p.cta }}</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- TESTIMONIALS -->
   <section class="section">
     <div class="container">
@@ -224,7 +198,6 @@
         <div class="footer-col">
           <h4>Product</h4>
           <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
           <a href="#how">How It Works</a>
           <a href="#">API Docs</a>
         </div>
