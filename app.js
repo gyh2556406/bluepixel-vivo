@@ -1,4 +1,6 @@
-const { createApp, ref, reactive, onMounted, onUnmounted } = Vue;
+const GOOGLE_CLIENT_ID = '441531089329-2lvgctldh97sbd9b3bec144bg2dqvaqj.apps.googleusercontent.com';
+
+const { createApp, ref, reactive, onMounted, onUnmounted, nextTick, watch } = Vue;
 
 createApp({
   setup() {
@@ -7,6 +9,8 @@ createApp({
     const email = ref('');
     const signedUp = ref(false);
     const typedText = ref('');
+    const user = ref(null);
+    const showUserMenu = ref(false);
 
     const phrases = [
       'Remove the person in the background…',
@@ -73,9 +77,69 @@ createApp({
       email.value = '';
     }
 
+    function decodeJwt(token) {
+      const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      return JSON.parse(atob(base64));
+    }
+
+    function handleGoogleCallback(response) {
+      const payload = decodeJwt(response.credential);
+      user.value = {
+        name: payload.name,
+        email: payload.email,
+        picture: payload.picture,
+      };
+      localStorage.setItem('bluepixel_user', JSON.stringify(user.value));
+    }
+
+    function logout() {
+      user.value = null;
+      showUserMenu.value = false;
+      localStorage.removeItem('bluepixel_user');
+      // Re-render the sign-in button after logout
+      nextTick(() => renderGoogleButton());
+    }
+
+    function renderGoogleButton() {
+      const el = document.getElementById('google-signin-btn');
+      if (el && window.google) {
+        google.accounts.id.renderButton(el, {
+          theme: 'filled_blue',
+          size: 'large',
+          width: 320,
+          text: 'continue_with',
+        });
+      }
+    }
+
+    // Expose callback globally for Google GSI
+    window.handleGoogleCallback = handleGoogleCallback;
+
     // Typing animation
     let typeInterval;
     onMounted(() => {
+      // Restore user session
+      const saved = localStorage.getItem('bluepixel_user');
+      if (saved) user.value = JSON.parse(saved);
+
+      // Init Google Sign-In
+      const initGoogle = () => {
+        if (window.google) {
+          google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleCallback,
+          });
+          if (!user.value) renderGoogleButton();
+        } else {
+          setTimeout(initGoogle, 200);
+        }
+      };
+      initGoogle();
+
+      // Close user menu on outside click
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.user-menu')) showUserMenu.value = false;
+      });
       let pi = 0, ci = 0, deleting = false;
       typeInterval = setInterval(() => {
         const phrase = phrases[pi];
@@ -126,6 +190,6 @@ createApp({
 
     onUnmounted(() => clearInterval(typeInterval));
 
-    return { scrolled, mobileMenu, email, signedUp, typedText, stats, features, steps, gallery, pricing, testimonials, faqs, toggleFaq, handleSignup };
+    return { scrolled, mobileMenu, email, signedUp, typedText, stats, features, steps, gallery, pricing, testimonials, faqs, toggleFaq, handleSignup, user, showUserMenu, logout };
   }
 }).mount('#app');
