@@ -8,7 +8,7 @@ const i18n = {
     features: { badge: 'Core Technology', title: 'Why BluePixel is <span class="gradient-text">different</span>', items: [
       { title: '4K Native Output', desc: 'Process and output at full 4K resolution. No downscaling, no quality loss — every pixel rendered at maximum fidelity.' },
       { title: 'Pixel Preservation', desc: "Areas you don't edit stay byte-identical. Zero degradation to untouched regions, guaranteed by our patented diffusion masking." },
-      { title: 'Natural Language', desc: "Describe your edit in plain English. No complex tools, no learning curve. Just type what you see in your mind's eye." },
+      { title: 'Human-like Interactions', desc: "The agent provides personalized recommendations for each input image, delivering better editing effects. Describe your edit in plain text — no complex tools needed." },
       { title: 'API & Integrations', desc: 'REST API, OpenClaw skill integration. Fits right into your existing creative agent ecosystem and workflow.' },
     ]},
     how: { badge: 'Simple Workflow', title: 'How It <span class="gradient-text">Works</span>', items: [
@@ -35,7 +35,7 @@ const i18n = {
     features: { badge: '核心技术', title: 'BluePixel 为何 <span class="gradient-text">与众不同</span>', items: [
       { title: '4K 原生输出', desc: '以完整 4K 分辨率处理和输出。无缩放、无质量损失——每个像素都以最高保真度渲染。' },
       { title: '像素保留', desc: '未编辑区域保持字节级一致。通过专利扩散掩码技术，确保未触碰区域零退化。' },
-      { title: '自然语言', desc: '用自然语言描述您的编辑。无需复杂工具，无需学习曲线。只需输入您脑海中的画面。' },
+      { title: '类人交互', desc: '智能体为每张输入图片提供个性化推荐，带来更好的编辑效果。用自然语言描述您的编辑——无需复杂工具。' },
       { title: 'API 与集成', desc: 'REST API，OpenClaw 技能集成。无缝融入您现有的创意智能体生态系统和工作流。' },
     ]},
     how: { badge: '简单工作流', title: '如何 <span class="gradient-text">运作</span>', items: [
@@ -62,7 +62,7 @@ const i18n = {
     features: { badge: 'コア技術', title: 'BluePixel が<span class="gradient-text">違う</span>理由', items: [
       { title: '4K ネイティブ出力', desc: '4K フル解像度で処理・出力。ダウンスケーリングなし、品質損失なし。' },
       { title: 'ピクセル保持', desc: '編集していない領域はバイト単位で同一。特許取得の拡散マスキングで保証。' },
-      { title: '自然言語', desc: '普通の言葉で編集内容を記述。複雑なツールも学習曲線も不要。' },
+      { title: '人間らしいインタラクション', desc: '各入力画像に対してパーソナライズされた提案を提供し、より良い編集効果を実現。自然言語で編集内容を記述——複雑なツールは不要。' },
       { title: 'API と統合', desc: 'REST API、OpenClaw スキル統合。既存のクリエイティブワークフローにシームレスに統合。' },
     ]},
     how: { badge: 'シンプルワークフロー', title: '使い方<span class="gradient-text">ガイド</span>', items: [
@@ -89,7 +89,7 @@ const i18n = {
     features: { badge: '핵심 기술', title: 'BluePixel이 <span class="gradient-text">다른</span> 이유', items: [
       { title: '4K 네이티브 출력', desc: '4K 풀 해상도로 처리 및 출력. 다운스케일링 없음, 품질 손실 없음.' },
       { title: '픽셀 보존', desc: '편집하지 않은 영역은 바이트 수준으로 동일. 특허 확산 마스킹으로 보장.' },
-      { title: '자연어', desc: '자연어로 편집 내용을 설명하세요. 복잡한 도구나 학습 곡선이 필요 없습니다.' },
+      { title: '인간과 같은 상호작용', desc: '에이전트가 각 입력 이미지에 맞춤형 추천을 제공하여 더 나은 편집 효과를 제공합니다. 자연어로 편집 내용을 설명하세요——복잡한 도구는 필요 없습니다.' },
       { title: 'API 및 통합', desc: 'REST API, OpenClaw 스킬 통합. 기존 크리에이티브 워크플로우에 원활하게 통합.' },
     ]},
     how: { badge: '간단한 워크플로우', title: '작동 <span class="gradient-text">방식</span>', items: [
@@ -116,7 +116,7 @@ const i18n = {
     features: { badge: 'Tecnología Central', title: 'Por qué BluePixel es <span class="gradient-text">diferente</span>', items: [
       { title: 'Salida Nativa 4K', desc: 'Procesa y genera en resolución 4K completa. Sin reducción de escala, sin pérdida de calidad.' },
       { title: 'Preservación de Píxeles', desc: 'Las áreas no editadas permanecen idénticas byte a byte. Garantizado por nuestro enmascaramiento de difusión patentado.' },
-      { title: 'Lenguaje Natural', desc: 'Describe tu edición en lenguaje natural. Sin herramientas complejas, sin curva de aprendizaje.' },
+      { title: 'Interacciones Humanizadas', desc: 'El agente proporciona recomendaciones personalizadas para cada imagen, logrando mejores efectos de edición. Describe tu edición en texto plano — sin herramientas complejas.' },
       { title: 'API e Integraciones', desc: 'API REST, integración con OpenClaw. Se integra perfectamente en tu ecosistema creativo.' },
     ]},
     how: { badge: 'Flujo Simple', title: 'Cómo <span class="gradient-text">Funciona</span>', items: [
@@ -143,7 +143,7 @@ const i18n = {
     features: { badge: 'Technologie de base', title: 'Pourquoi BluePixel est <span class="gradient-text">différent</span>', items: [
       { title: 'Sortie native 4K', desc: 'Traitement et sortie en résolution 4K complète. Pas de réduction, pas de perte de qualité.' },
       { title: 'Préservation des pixels', desc: 'Les zones non éditées restent identiques octet par octet. Garanti par notre masquage de diffusion breveté.' },
-      { title: 'Langage naturel', desc: "Décrivez votre modification en langage naturel. Pas d'outils complexes, pas de courbe d'apprentissage." },
+      { title: 'Interactions Humaines', desc: "L'agent fournit des recommandations personnalisées pour chaque image, offrant de meilleurs effets d'édition. Décrivez votre modification en texte simple — pas d'outils complexes." },
       { title: 'API et Intégrations', desc: "API REST, intégration OpenClaw. S'intègre parfaitement dans votre écosystème créatif." },
     ]},
     how: { badge: 'Flux simple', title: 'Comment ça <span class="gradient-text">fonctionne</span>', items: [
@@ -170,7 +170,7 @@ const i18n = {
     features: { badge: 'Kerntechnologie', title: 'Warum BluePixel <span class="gradient-text">anders</span> ist', items: [
       { title: 'Native 4K-Ausgabe', desc: 'Verarbeitung und Ausgabe in voller 4K-Auflösung. Kein Herunterskalieren, kein Qualitätsverlust.' },
       { title: 'Pixelerhaltung', desc: 'Nicht bearbeitete Bereiche bleiben byteidentisch. Garantiert durch unsere patentierte Diffusionsmaskierung.' },
-      { title: 'Natürliche Sprache', desc: 'Beschreiben Sie Ihre Bearbeitung in natürlicher Sprache. Keine komplexen Werkzeuge, keine Lernkurve.' },
+      { title: 'Menschliche Interaktionen', desc: 'Der Agent liefert personalisierte Empfehlungen für jedes Eingabebild und erzielt bessere Bearbeitungseffekte. Beschreiben Sie Ihre Bearbeitung in einfachem Text — keine komplexen Werkzeuge nötig.' },
       { title: 'API & Integrationen', desc: 'REST-API, OpenClaw-Skill-Integration. Fügt sich nahtlos in Ihr kreatives Ökosystem ein.' },
     ]},
     how: { badge: 'Einfacher Workflow', title: 'So <span class="gradient-text">funktioniert</span> es', items: [
